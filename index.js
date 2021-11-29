@@ -23,32 +23,36 @@ app.get('/api/lang',(req, res) => {
   let sql = "SELECT * FROM lang";
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
-    res.send(JSON.stringify({"status": 200, "error": null, "lang": results}));
+    res.setHeader("Content-Type", "application/json");
+    res.send(JSON.stringify(results, null, '\t'));
   });
 });
  
 //show single product
 app.get('/api/menulang/:id',(req, res) => {
-  let sql = "SELECT * FROM menulang where idLang ="+req.params.id;
+  let sql = "call mainmind.GetMenulang("+req.params.id+");";
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
-    res.send(JSON.stringify({"status": 200, "error": null, "menulang": results}));
+    res.setHeader("Content-Type", "application/json");
+    res.send(JSON.stringify(results[0], null, '\t'));
   });
 });
 
 app.get('/api/topiclang/:id',(req, res) => {
-  let sql = "SELECT id,topicLangField FROM topiclang where idMenuLang ="+req.params.id;
+  let sql = "call mainmind.GetTopickLang("+req.params.id+");";
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
-    res.send(JSON.stringify({"status": 200, "error": null, "topiclang": results}));
+    res.setHeader("Content-Type", "application/json");
+    res.send(JSON.stringify(results[0], null, '\t'));
   });
 });
 
 app.get('/api/education/:id',(req, res) => {
-  let sql = "SELECT * FROM education where idTopicLang ="+req.params.id;
+  let sql = "call mainmind.GetEducation("+req.params.id+");";
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
-    res.send(JSON.stringify({"status": 200, "error": null, "education": results}));
+    res.setHeader("Content-Type", "application/json");
+    res.send(JSON.stringify({results}, null, '\t'));
   });
 });
 
