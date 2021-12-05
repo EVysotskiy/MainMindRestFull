@@ -52,7 +52,16 @@ app.get('/api/education/:id',(req, res) => {
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.setHeader("Content-Type", "application/json");
-    res.send(JSON.stringify({results}, null, '\t'));
+    res.send(JSON.stringify(results[0], null, '\t'));
+  });
+});
+
+app.post('/api/education/add',(req, res) => {
+  let data = {idTopicLang: req.body.idTopicLang, educationTextField: req.body.educationTextField};
+  let sql = "INSERT INTO `mainmind`.`education` SET ?";
+  let query = conn.query(sql, data,(err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
   });
 });
 
