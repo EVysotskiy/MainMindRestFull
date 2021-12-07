@@ -2,6 +2,21 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const mysql = require('mysql');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
+const swaggerOptions = {
+    swaggerDefinition: {
+        info: {
+            title: 'MainMind REST API',
+            description: "Rest API созданно с использованием Express и Mysql"
+        },
+    },
+    apis: ["index.js"]
+}
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/info/api', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  
 app.use(bodyParser.json());
  
@@ -19,6 +34,17 @@ conn.connect((err) =>{
   console.log('Mysql Connected...');
 });
  
+
+ /**
+ * @swagger
+ * /api/lang:
+ *   get:
+ *     responses:
+ *       id:
+ *         description: Индекс языка
+ *       nameLang:
+ *               description: Название языка
+ */
 app.get('/api/lang',(req, res) => {
   let sql = "SELECT * FROM lang";
   let query = conn.query(sql, (err, results) => {
